@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Lola, Kaisa, Ella, Veeti">
+  <title> Täysi-ikäisten joulukalenteri</title>
+  <link href="kalenteri.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <div class="calendar-bg">
+    <a href="index.html" class="title-link">
+    <h1 class="title">HYVÄÄ<br>JOULUA</h1>
+</a>
+    <h6>Tekijät: Lola, Kaisa, Ella, Veeti <br> 5.12.2025</h6>
+    <h4> Paina luukussa olevaa kuvaa <br> ja pääset näkemään päivän drinkkireseptin! </h4>
+    <div id="grid" class="grid"></div>
+    
+  </div>
+
+   <script>
+  const days = 25; // Luukkujen määrä
+  const today = new Date().getDate(); // Nykyinen päivä
+  const storageKey = 'drink_opened_doors'; // Avain selaimen muistille
+
+ const images = [
+      'KUVAT/juoma1.png',
+      'KUVAT/juoma2.png',
+      'KUVAT/juoma3.png',
+      'KUVAT/juoma4.png',
+      'KUVAT/juoma5.png',
+      'KUVAT/juoma6.png',
+      'KUVAT/juoma7.png',
+      'KUVAT/juoma8.png',
+      'KUVAT/juoma9.png',
+      'KUVAT/juoma10.png',
+      'KUVAT/juoma11.png',
+      'KUVAT/juoma12.png',
+      'KUVAT/juoma13.png',
+      'KUVAT/juoma14.png',
+      'KUVAT/juoma15.png',
+      'KUVAT/juoma16.png',
+      'KUVAT/juoma17.png',
+      'KUVAT/juoma18.png',
+      'KUVAT/juoma19.png',
+      'KUVAT/juoma20.png',
+      'KUVAT/juoma21.png',
+      'KUVAT/juoma22.png',
+      'KUVAT/juoma23.png',
+      'KUVAT/juoma24.png',
+      'KUVAT/juoma25.png',
+    ];
+
+    const link = [
+    'https://www.bbcgoodfood.com/recipes/spicy-margarita',
+    'https://www.bbcgoodfood.com/recipes/hurricane-cocktail',
+    'https://www.bbcgoodfood.com/recipes/cherry-sour',
+    'https://www.bbcgoodfood.com/recipes/picante',
+    'https://www.bbcgoodfood.com/recipes/classic-champagne-cocktail',
+    'https://www.bbcgoodfood.com/recipes/woo-woo',
+    'https://www.bbcgoodfood.com/recipes/vodka-martini',
+    'https://www.bbcgoodfood.com/recipes/banana-daiquiri',
+    'https://www.bbcgoodfood.com/recipes/white-russian',
+    'https://www.bbcgoodfood.com/recipes/tequila-sunrise',
+    'https://www.bbcgoodfood.com/recipes/mudslide',
+    'https://www.bbcgoodfood.com/recipes/grapefruit-negroni',
+    'https://www.bbcgoodfood.com/recipes/shirley-temple',
+    'https://www.bbcgoodfood.com/recipes/zombie-cocktail',
+    'https://www.bbcgoodfood.com/recipes/blackberry-vodka',
+    'https://www.bbcgoodfood.com/recipes/cuba-libre',
+    'https://www.bbcgoodfood.com/recipes/witchs-brew',
+    'https://www.bbcgoodfood.com/recipes/pink-negroni-2',
+    'https://www.bbcgoodfood.com/recipes/limoncello-mojito',
+    'https://www.bbcgoodfood.com/recipes/espresso-eggnog-martini',
+    'https://www.bbcgoodfood.com/recipes/frozen-margarita',
+    'https://www.bbcgoodfood.com/recipes/dizzy-mezcal',
+    'https://www.bbcgoodfood.com/recipes/jessica-rabbit-cocktail',
+    'https://www.bbcgoodfood.com/recipes/blueberry-mojito',
+    'https://www.bbcgoodfood.com/recipes/easy-bloody-mary'
+    ]
+
+  let dayNumbers = [];
+  for (let i = 1; i <= days; i++) {
+    dayNumbers.push(i);
+  }
+
+  for (let i = dayNumbers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [dayNumbers[i], dayNumbers[j]] = [dayNumbers[j], dayNumbers[i]];
+  }
+
+  dayNumbers.forEach(dayNum => {
+    let imageNum = dayNum - 1; 
+    
+    let numberClass = '';
+    if (dayNum === today) {
+        numberClass = 'current-day';
+    } else if (dayNum < today) {
+        numberClass = 'past-day';
+    }
+
+    grid.innerHTML += `
+      <div class="day">
+        <div class="door door-${dayNum}">
+          <div class="number ${numberClass}">${dayNum}</div>
+        </div> 
+        <a class="cat-link" href="${link[imageNum]}" target="_blank">
+        <div class="bg-img" style="background-image: url('${images[imageNum]}')"></div>
+        </a>
+      </div>
+    `;
+  });
+
+  let doors = document.getElementsByClassName('door');
+  
+  let openedDoors = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+  for (let i = 0; i < doors.length; i++) {
+    let dayNumber = parseInt(doors[i].querySelector('.number').textContent, 10);
+
+    if (openedDoors.includes(dayNumber)) {
+        doors[i].classList.add('open');
+    }
+
+    if (dayNumber <= today) {
+      doors[i].addEventListener('click', () => {
+        doors[i].classList.add('open');
+        
+        if (!openedDoors.includes(dayNumber)) {
+            openedDoors.push(dayNumber);
+            localStorage.setItem(storageKey, JSON.stringify(openedDoors));
+        }
+      });
+    }
+  }
+</script>
+</body>
+</html>

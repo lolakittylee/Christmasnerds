@@ -1,0 +1,39 @@
+h2 {
+    color: rgb(120, 55, 108);
+    font-size: 75px;
+    text-align: center;
+}
+
+body {
+    background-image: url('KUVAT/tausta_pinkii.jpg');
+    background-size: cover;
+    background-position: center;
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 125px;
+}
+
+h3 {
+    text-align: center;
+    color: rgb(48, 20, 56);
+    display: block;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+.nappi {
+    text-align: center;
+    size: 100px;
+}
+
+footer {
+    text-align: center;
+    padding-top: 250px;
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(251, 220, 242);
+
+}
+
+.tekijätiedot {
+    font-size: 12px;
+}

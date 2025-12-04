@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Lola, Kaisa, Ella, Veeti">
+  <title>HESY joulukalenteri</title>
+  <link href="luukut2.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+  <div class="calendar-bg">
+    <a href="index.html" class="title-link">
+    <h1 class="title">HYVÄÄ<br>JOULUA</h1>
+</a>
+    <h6>Yhteistyössä HESY ry:n kanssa <br> Tekijät: Lola, Kaisa, Ella, Veeti</h6>
+    <h4> Paina luukussa olevaa kuvaa <br> ja saat enemmän tietoa kuvassa olevista ystävistä! </h4>
+    <div id="grid" class="grid"></div>
+    
+  </div>
+
+   <script>
+  const days = 25; 
+  const today = new Date().getDate(); 
+  const storageKey = 'hesy_opened_doors'; 
+  
+  const images = [
+      'KUVAT/Kissa1.png',
+      'KUVAT/Kissa2.jpg',
+      'KUVAT/Kissa3.png',
+      'KUVAT/Kissa4.jpg',
+      'KUVAT/Kissa5.png',
+      'KUVAT/Kissa6.jpg',
+      'KUVAT/Kissa7.png',
+      'KUVAT/Kissa8.png',
+      'KUVAT/Kissa9.png',
+      'KUVAT/Kissa10.png',
+      'KUVAT/Kissa11.png',
+      'KUVAT/Kissa12.png',
+      'KUVAT/Kissa13.png',
+      'KUVAT/Kissa14.png',
+      'KUVAT/Kissa15.png',
+      'KUVAT/Kissa16.jpg',
+      'KUVAT/Kissa17.jpg',
+      'KUVAT/Kissa18.png',
+      'KUVAT/Kissa19.png',
+      'KUVAT/Kissa20.png',
+      'KUVAT/Kissa21.png',
+      'KUVAT/Kissa22.png',
+      'KUVAT/Kissa23.png',
+      'KUVAT/Pupu24.png',
+      'KUVAT/Marsu25.png',
+    ];
+    const link = [
+    'https://www.hesy.fi/portfolio_page/ylvi/',
+    'https://www.hesy.fi/portfolio_page/pirpana/',
+    'https://www.hesy.fi/portfolio_page/beggy/',
+    'https://www.hesy.fi/portfolio_page/ludmilla/',
+    'https://www.hesy.fi/portfolio_page/yto/',
+    'https://www.hesy.fi/portfolio_page/poppana/',
+    'https://www.hesy.fi/portfolio_page/cindi/',
+    'https://www.hesy.fi/portfolio_page/wall-e/',
+    'https://www.hesy.fi/portfolio_page/xen/',
+    'https://www.hesy.fi/portfolio_page/baloo/',
+    'https://www.hesy.fi/portfolio_page/brocky/',
+    'https://www.hesy.fi/portfolio_page/adalia/',
+    'https://www.hesy.fi/portfolio_page/aake/',
+    'https://www.hesy.fi/portfolio_page/alvar/',
+    'https://www.hesy.fi/portfolio_page/alaska/',
+    'https://www.hesy.fi/portfolio_page/auriina/',
+    'https://www.hesy.fi/portfolio_page/bambido/',
+    'https://www.hesy.fi/portfolio_page/delcatty/',
+    'https://www.hesy.fi/portfolio_page/papu/',
+    'https://www.hesy.fi/portfolio_page/bubba/',
+    'https://www.hesy.fi/portfolio_page/veluza/',
+    'https://www.hesy.fi/portfolio_page/trude/',
+    'https://www.hesy.fi/portfolio_page/dusty/',
+    'https://www.hesy.fi/portfolio_page/rauha-ja-oosa/ ',
+    'https://www.hesy.fi/portfolio_page/kuisma-ja-kaima/ '
+    ]
+
+
+  let dayNumbers = [];
+  for (let i = 1; i <= days; i++) {
+    dayNumbers.push(i);
+  }
+
+
+  for (let i = dayNumbers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [dayNumbers[i], dayNumbers[j]] = [dayNumbers[j], dayNumbers[i]];
+  }
+
+  dayNumbers.forEach(dayNum => {
+    let imageNum = dayNum - 1; 
+
+    let numberClass = '';
+    if (dayNum === today) {
+        numberClass = 'current-day'; 
+    } else if (dayNum < today) {
+        numberClass = 'past-day';    
+    }
+
+    grid.innerHTML += `
+      <div class="day">
+        <div class="door door-${dayNum}">
+          <div class="number ${numberClass}">${dayNum}</div>
+        </div> 
+        <a class="cat-link" href="${link[imageNum]}" target="_blank">
+        <div class="bg-img" style="background-image: url('${images[imageNum]}')"></div>
+        </a>
+      </div>
+    `;
+  });
+
+  let doors = document.getElementsByClassName('door');
+  
+  let openedDoors = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+  for (let i = 0; i < doors.length; i++) {
+    let dayNumber = parseInt(doors[i].querySelector('.number').textContent, 10);
+
+    if (openedDoors.includes(dayNumber)) {
+        doors[i].classList.add('open');
+    }
+
+    if (dayNumber <= today) {
+      doors[i].addEventListener('click', () => {
+        doors[i].classList.add('open');
+        
+        if (!openedDoors.includes(dayNumber)) {
+            openedDoors.push(dayNumber);
+            localStorage.setItem(storageKey, JSON.stringify(openedDoors));
+        }
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
